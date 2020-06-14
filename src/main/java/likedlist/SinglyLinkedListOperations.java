@@ -1,6 +1,6 @@
 package likedlist;
 
-public class LinkedListOperations {
+public class SinglyLinkedListOperations {
 
     public static void main(String[] args) {
         /**
