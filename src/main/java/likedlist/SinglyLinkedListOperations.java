@@ -9,7 +9,7 @@ public class SinglyLinkedListOperations {
          * Create a Linked List and Print it.
          */
         System.out.println("Create a Linked List and Print it.");
-        Node start = createLinkedList(10, false);
+        Node start = createLinkedList(10, false, 0);
         printList(start);
 
         /**
@@ -23,7 +23,7 @@ public class SinglyLinkedListOperations {
          * Insert Node at the end of the list.
          */
         System.out.println("Insert Node at the end of the list.");
-        Node newEnd = insertNodeAtTheEndOfList(start,10);
+        Node newEnd = insertNodeAtTheEndOfList(start, 10);
         printList(newEnd);
 
         /**
@@ -44,7 +44,7 @@ public class SinglyLinkedListOperations {
          * Merge Sort a LinkedList.
          */
         System.out.println("Merge Sort a LinkedList.");
-        Node l1 = createLinkedList(10, true);
+        Node l1 = createLinkedList(10, true, 100);
         System.out.println("List: ");
         printList(l1);
         Node sortedList = mergeSort(l1);
@@ -55,7 +55,7 @@ public class SinglyLinkedListOperations {
          * Exchange Adjacent Nodes in a LinkedList.
          */
         System.out.println("Exchange Adjacent Nodes in a LinkedList.");
-        Node list = createLinkedList(10, true);
+        Node list = createLinkedList(10, true, 100);
         System.out.println("List: ");
         printList(list);
         Node exchangedList = exchangeAdjacentNodes(list);
@@ -74,6 +74,124 @@ public class SinglyLinkedListOperations {
         printList(list);
         System.out.println("Result: " + result);
 
+        /**
+         * Reverse k blocks of nodes in a linkedList
+         */
+        System.out.println("Reverse k blocks of nodes in a linkedList");
+        Node inputList = createLinkedList(10, true, 100);
+        printList(inputList);
+        Node reversedBlockList = reverseBlocks(inputList, 3);
+        printList(reversedBlockList);
+
+        /**
+         * Rotate list to the right by k places.
+         * Eg: 1 -> 2 -> 3 -> 4 -> 5 -> NULL, k = 2
+         * Output: 4 -> 5 -> 1 -> 2 -> 3 -> NULL
+         */
+        System.out.println("Rotate list to the right by k places.");
+        Node toBeRotatedList = createLinkedList(5, true, 100);
+        printList(toBeRotatedList);
+        Node rotatedList = rotateByKPlaces(toBeRotatedList, 2);
+        printList(rotatedList);
+
+        /**
+         * Perform Addition of 2 numbers in LinkedList Form.
+         * Eg: (3 -> 4 -> 3) + (5 -> 6 -> 4) = (8 -> 0 -> 8)
+         */
+        System.out.println("Perform Addition of 2 numbers in LinkedList Form.");
+        Node num1 = createLinkedList(3, true, 9);
+        Node num2 = createLinkedList(4, true, 9);
+        System.out.println("Input 1");
+        printList(num1);
+        System.out.println("Input 2");
+        printList(num2);
+        System.out.println("Result");
+        Node sum = addNumbers(num1, num2);
+        printList(sum);
+
+    }
+
+    private static Node addNumbers(Node num1, Node num2) {
+        if(num1 == null) {
+            return num2;
+        }
+        if(num2 == null) {
+            return num1;
+        }
+        Node res = new Node(-1);
+        Node temp = res;
+        int carry = 0;
+        while (num1 != null && num2 != null) {
+            int sum = num1.value + num2.value + carry;
+            carry = sum / 10;
+            sum = sum % 10;
+            temp.next = new Node(sum);
+            temp = temp.next;
+            num1 = num1.next;
+            num2 = num2.next;
+        }
+        if (num1 != null) {
+            if(carry != 0) {
+                temp.next = addNumbers(num1, new Node(carry));
+            }
+            else {
+                temp.next = num1;
+            }
+
+        } else if (num2 != null) {
+            if(carry != 0) {
+                temp.next = addNumbers(num2,new Node(carry));
+            }
+            else {
+                temp.next = num2;
+            }
+        } else if(carry != 0) {
+            temp.next = new Node(carry);
+        }
+        return res.next;
+    }
+
+
+    private static Node rotateByKPlaces(Node head, int k) {
+        Node rotateStart = head;
+        Node rotateEnd = head;
+        while (k > 0) {
+            if (rotateEnd.next != null) {
+                rotateEnd = rotateEnd.next;
+            } else {
+                rotateEnd = head;
+            }
+            k--;
+        }
+
+        while (rotateEnd.next != null) {
+            rotateStart = rotateStart.next;
+            rotateEnd = rotateEnd.next;
+        }
+
+        Node startingPointForRotatedList = rotateStart.next;
+        rotateStart.next = null;
+        rotateEnd.next = head;
+
+        return startingPointForRotatedList;
+    }
+
+    private static Node reverseBlocks(Node head, int k) {
+        int count = k;
+        Node current = head;
+        Node prev = null;
+        Node next = null;
+        while (current != null && count != 0) {
+            next = current.next;
+            current.next = prev;
+            prev = current;
+            current = next;
+            count--;
+        }
+        if (next != null) {
+            head.next = reverseBlocks(next, k);
+        }
+        return prev;
     }
 
 
@@ -206,10 +324,10 @@ public class SinglyLinkedListOperations {
         return newStart;
     }
 
-    private static Node insertNodeAtTheEndOfList(Node start,int val) {
+    private static Node insertNodeAtTheEndOfList(Node start, int val) {
         Node newNode = new Node(val);
-        Node current =  start;
-        while(current.next != null) {
+        Node current = start;
+        while (current.next != null) {
             current = current.next;
         }
         current.next = newNode;
@@ -222,13 +340,13 @@ public class SinglyLinkedListOperations {
         return newNode;
     }
 
-    private static Node createLinkedList(int n, boolean random) {
-        Node start = new Node(0);
+    private static Node createLinkedList(int n, boolean random, int upperBound) {
+        Node start = new Node(1);
         Node current = start;
         Random rand = new Random();
         for (int i = 1; i < n; i++) {
             if (random)
-                current.next = new Node(rand.nextInt(100));
+                current.next = new Node(rand.nextInt(upperBound - 1) + 1);
             else
                 current.next = new Node(i);
             current = current.next;
