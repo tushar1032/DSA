@@ -1,6 +1,6 @@
 package likedlist;
 
-public class Stack {
+public class Stack<T> {
     private Node HEAD;
     private Node TAIL;
     private int size;
@@ -9,10 +9,11 @@ public class Stack {
     public Stack(int size) {
         HEAD = new Node(0);
         TAIL = HEAD;
+        TAIL.head = HEAD;
         this.size = size;
     }
 
-    public void push(int val) {
+    public void push(T val) {
         if (currentSize < size) {
             if (currentSize == 0) {
                 HEAD.value = val;
@@ -28,16 +29,24 @@ public class Stack {
         }
     }
 
-    public Node pop() {
+    public T pop() {
         if (currentSize > 0) {
             Node popperNode = TAIL;
             TAIL.next = null;
             TAIL = TAIL.head;
             currentSize--;
-            return popperNode;
+            return (T) popperNode.value;
         } else {
             throw new RuntimeException("Stack Underflow!!!");
         }
+    }
+
+    public T peek() {
+        return (T) TAIL.value;
+    }
+
+    public boolean isEmpty() {
+        return currentSize == 0;
     }
 
     public void printStack() {

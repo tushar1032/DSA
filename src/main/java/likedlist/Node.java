@@ -1,7 +1,7 @@
 package likedlist;
 
 public class Node implements Cloneable {
-    int value = 0;
+    Object value = 0;
     Node next;
     Node head;
 
@@ -13,8 +13,16 @@ public class Node implements Cloneable {
         this.head = head;
     }
 
-    public Node(int value) {
+    public Node(Object value) {
         this.value = value;
+    }
+
+    public int getInt() {
+        return (Integer) value;
+    }
+
+    public String getString() {
+        return value.toString();
     }
 
     public Node clone() throws CloneNotSupportedException {
