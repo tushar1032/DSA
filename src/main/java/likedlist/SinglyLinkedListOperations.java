@@ -122,7 +122,7 @@ public class SinglyLinkedListOperations {
         Node temp = res;
         int carry = 0;
         while (num1 != null && num2 != null) {
-            int sum = num1.value + num2.value + carry;
+            int sum = num1.getInt() + num2.getInt() + carry;
             carry = sum / 10;
             sum = sum % 10;
             temp.next = new Node(sum);
@@ -298,7 +298,7 @@ public class SinglyLinkedListOperations {
             return l1;
         }
         Node head = null;
-        if (l1.value <= l2.value) {
+        if (l1.getInt() <= l2.getInt()) {
             head = l1;
             head.next = mergeLists(head.next, l2);
         } else {
@@ -310,7 +310,7 @@ public class SinglyLinkedListOperations {
 
     private static Node removeNodeMatchingVal(Node start, int val) {
         Node current = start;
-        while (current.next != null && current.next.value != val) {
+        while (current.next != null && current.next.getInt() != val) {
             current = current.next;
         }
         Node prev = current;
