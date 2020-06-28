@@ -13,6 +13,35 @@ public class StackOperations {
         String postFix = convertInfixToPostfix(infix);
         System.out.println("Postfix: " + postFix);
 
+        /**
+         * Reverse a Stack
+         */
+        System.out.println("Reverse a Stack");
+        Stack<Integer> stack = createAnIntegerStack(5,25);
+        System.out.println("Before:");
+        stack.printStack();
+        printStackReverse(stack);
+        System.out.println("After:");
+        stack.printStack();
+    }
+
+    private static void printStackReverse(Stack stack) {
+        if(stack.isEmpty()) {
+            return;
+        }
+        int tmp = (Integer) stack.pop();
+        printStackReverse(stack);
+        insertAtBottom(stack,tmp);
+    }
+
+    private static void insertAtBottom(Stack stack, int data) {
+        if(stack.isEmpty()) {
+            stack.push(data);
+            return;
+        }
+            int tmp = (Integer) stack.pop();
+            insertAtBottom(stack,data);
+            stack.push(tmp);
     }
 
     private static String convertInfixToPostfix(String expr) {

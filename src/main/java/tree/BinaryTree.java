@@ -1,7 +1,6 @@
 package tree;
 
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 public class BinaryTree {
 
@@ -47,6 +46,84 @@ public class BinaryTree {
          */
         int max = findMaxRecursively(binaryTree);
         System.out.println("Max element in the tree is: " + max);
+
+        /**
+         * Search an element in binary tree.
+         */
+        System.out.println("Search an element in binary tree.");
+        boolean isPresent = findElement(binaryTree,5);
+        System.out.println("Element is 5 present ?: " + isPresent);
+        isPresent = findElement(binaryTree,9);
+        System.out.println("Element is 9 present ?: " + isPresent);
+
+        /**
+         * Print Elements Level Wise in Reverse Order.
+         */
+        System.out.println("Print Elements Level Wise in Reverse Order.");
+        printElementsLevelWiseReverse(binaryTree);
+
+        /**
+         * Find the Depth of a tree.
+         */
+        System.out.println();
+        System.out.println("Find the Depth of a tree.");
+        int depth = findDepth(binaryTree);
+        System.out.println("Depth: " + depth);
+    }
+
+    private static int findDepth(Node root) {
+        if(root == null) {
+            return 0;
+        }
+        int leftDept = findDepth(root.left);
+        int rightDepth = findDepth(root.right);
+        return leftDept >= rightDepth?leftDept + 1 : rightDepth + 1;
+    }
+
+    private static void printElementsLevelWiseReverse(Node root) {
+        Queue<Node> q = new LinkedList<>();
+        List<List<Node>> levelWise = new ArrayList<>();
+        List<Node> currentLevel = new ArrayList<>();
+
+        q.add(root);
+        q.add(null);
+        while(!q.isEmpty()) {
+            Node tmp = q.remove();
+            if(tmp != null) {
+                currentLevel.add(tmp);
+                if(tmp.left != null) {
+                    q.add(tmp.left);
+
+                }
+                if(tmp.right != null) {
+                    q.add(tmp.right);
+                }
+            }
+            else {
+                levelWise.add(new ArrayList<>(currentLevel));
+                currentLevel.clear();
+                if(!q.isEmpty()) {
+                    q.add(null);
+                }
+            }
+        }
+        int size = levelWise.size();
+        for(int i = size-1;i >= 0;i--) {
+            levelWise.get(i).forEach(node -> System.out.print(node.data + " "));
+        }
+    }
+
+    private static boolean findElement(Node root,int data) {
+        if(root == null) {
+            return false;
+        }
+        if((Integer) root.data == data) {
+            return true;
+        }
+        if(findElement(root.left,data)) {
+            return true;
+        }
+        return findElement(root.right,data);
     }
 
     private static int findMaxRecursively(Node root) {
