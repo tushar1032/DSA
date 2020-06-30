@@ -63,12 +63,79 @@ public class BinaryTree {
         printElementsLevelWiseReverse(binaryTree);
 
         /**
-         * Find the Depth of a tree.
+         * Find the Depth of a tree. Also equal to the height of the tree.
          */
         System.out.println();
-        System.out.println("Find the Depth of a tree.");
+        System.out.println("Find the Depth of a tree. Also equal to height of the tree.");
         int depth = findDepth(binaryTree);
         System.out.println("Depth: " + depth);
+
+        /**
+         * Find the width of the tree.
+         */
+        System.out.println("Find the width of the tree.");
+        int width = findWidth(binaryTree);
+        System.out.println("Width: " + width);
+
+        /**
+         * Find the max Sum of a tree level wise.
+         */
+        System.out.println("Find the max Sum of a tree level wise.");
+        int maxSumLevelWise = maxSumPerLevel(binaryTree);
+        System.out.println("Max Sum per Level: " + maxSumLevelWise);
+    }
+
+    private static int maxSumPerLevel(Node root) {
+        Queue<Node> q = new LinkedList<>();
+        q.add(root);
+        q.add(null);
+        int maxSum = Integer.MIN_VALUE;
+        int currentLevelSum = 0;
+        while(!q.isEmpty()) {
+            Node tmp = q.remove();
+            if(tmp != null) {
+                currentLevelSum += (Integer) tmp.data;
+                if(tmp.left != null) {
+                    q.add(tmp.left);
+                }
+                if(tmp.right != null) {
+                    q.add(tmp.right);
+                }
+            }
+            else {
+                maxSum = Math.max(maxSum,currentLevelSum);
+                currentLevelSum = 0;
+                if(!q.isEmpty()) {
+                    q.add(null);
+                }
+            }
+        }
+        return maxSum;
+    }
+
+    private static int findWidth(Node root) {
+        Queue<Node> q = new LinkedList<>();
+        q.add(root);
+        q.add(null);
+        int width = 0;
+        while(!q.isEmpty()) {
+            Node tmp = q.remove();
+            if(tmp != null) {
+                if(tmp.left != null) {
+                    q.add(tmp.left);
+                }
+                if(tmp.right != null) {
+                    q.add(tmp.right);
+                }
+            }
+            else {
+                width = Math.max(width,q.size());
+                if(!q.isEmpty()) {
+                    q.add(null);
+                }
+            }
+        }
+        return width;
     }
 
     private static int findDepth(Node root) {
