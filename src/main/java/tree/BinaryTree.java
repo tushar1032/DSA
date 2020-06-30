@@ -69,34 +69,6 @@ public class BinaryTree {
         System.out.println("Find the Depth of a tree.");
         int depth = findDepth(binaryTree);
         System.out.println("Depth: " + depth);
-
-        /**
-         * Find the Deepest Node in the Tree.
-         */
-        findTheDeepestNode(binaryTree);
-    }
-
-    private static void findTheDeepestNode(Node root) {
-        if(root == null) {
-            System.out.println("Root is null");
-        }
-
-        Queue<Node> q = new LinkedList<>();
-        q.add(root);
-        Node tmp = null;
-        while(!q.isEmpty()) {
-            tmp = q.remove();
-            if(tmp != null) {
-                if(tmp.left != null) {
-                    q.add(tmp.left);
-                }
-                if(tmp.right != null) {
-                    q.add(tmp.right);
-                }
-            }
-        }
-        System.out.println("Deepest Node: " + tmp.data);
-
     }
 
     private static int findDepth(Node root) {
