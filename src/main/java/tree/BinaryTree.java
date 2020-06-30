@@ -76,12 +76,6 @@ public class BinaryTree {
         findTheDeepestNode(binaryTree);
     }
 
-    private static int findTheTotalNumOfFullNodes(Node root) {
-        Queue<Node> q = new LinkedList<>();
-        q.offer(root);
-
-    }
-
     private static void findTheDeepestNode(Node root) {
         if(root == null) {
             System.out.println("Root is null");
