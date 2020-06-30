@@ -83,7 +83,80 @@ public class BinaryTree {
         System.out.println("Find the max Sum of a tree level wise.");
         int maxSumLevelWise = maxSumPerLevel(binaryTree);
         System.out.println("Max Sum per Level: " + maxSumLevelWise);
+
+        /**
+         * Find the number of Full Nodes. i.e; Nodes that have both children.
+         */
+        System.out.println("Find the number of Full Nodes. i.e; Nodes that have both children.");
+        int numOfFullNodes = numOfFullNodes(binaryTree);
+        System.out.println("Num of Full Nodes: " + numOfFullNodes);
+
+        /**
+         * Print every path from root to leaf.
+         */
+        System.out.println("Print every path from root to leaf.");
+        pathOfRootToLeaf(binaryTree);
+
+        /**
+         * Mirror a binary tree.
+         */
+        System.out.println("Mirror a binary tree.");
+        System.out.println("Before:");
+        preOrderTraversal(binaryTree);
+        treeMirror(binaryTree);
+        System.out.println("After:");
+        preOrderTraversal(binaryTree);
     }
+
+    private static void treeMirror(Node root) {
+        if(root != null) {
+            Node tmp = root.left;
+            root.left = root.right;
+            root.right = tmp;
+            treeMirror(root.left);
+            treeMirror(root.right);
+        }
+    }
+
+    private static void pathOfRootToLeaf(Node root) {
+        List<Integer> path = new ArrayList<>();
+        pathOfRootToLeaf(root,path,0);
+    }
+
+    private static void pathOfRootToLeaf(Node root,List<Integer> path,int pathLen) {
+        if(root == null) {
+            return;
+        }
+        path.add(pathLen,((Integer) root.data));
+        pathLen++;
+        if(root.left == null && root.right == null) {
+            for(int i = 0;i < pathLen;i++) {
+                System.out.print(path.get(i) + " ");
+            }
+            System.out.println();
+        }
+            pathOfRootToLeaf(root.left,path,pathLen);
+            pathOfRootToLeaf(root.right,path,pathLen);
+    }
+
+    private static int numOfFullNodes(Node root) {
+        Queue<Node> q = new LinkedList<>();
+        q.add(root);
+        int numOfFullNodes = 0;
+        while(!q.isEmpty()) {
+            Node tmp = q.remove();
+                if(tmp.left != null) {
+                    q.add(tmp.left);
+                }
+                if(tmp.right != null) {
+                    q.add(tmp.right);
+                }
+                if(tmp.left != null && tmp.right != null) {
+                    numOfFullNodes++;
+                }
+            }
+        return numOfFullNodes;
+        }
 
     private static int maxSumPerLevel(Node root) {
         Queue<Node> q = new LinkedList<>();
