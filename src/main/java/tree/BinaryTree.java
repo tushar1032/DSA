@@ -149,16 +149,64 @@ public class BinaryTree {
          */
         System.out.println("Find the LCA (Lowest Common Ancestor) of two nodes in a tree.");
         System.out.println("LCA of 4 and 6");
-        Node result = findLCA(binaryTree,new Node(4),new Node(6));
+        Node result = findLCA(binaryTree, new Node(4), new Node(6));
         System.out.println(result.data);
 
         /**
          * Find the Shortest Distance between 2 Nodes in a BST. Assuming that both the nodes exist in the tree.
          */
         System.out.println("Find the Shortest Distance between 2 Nodes in a BST. Assuming that both the nodes exist in the tree.");
-        int distance = findShortestDistanceBetweenNodesBST(getBST(),5,1);
+        int distance = findShortestDistanceBetweenNodesBST(getBST(), 5, 1);
         System.out.println("Distance between Node 3 and 5 is: " + distance);
 
+        /**
+         * Create a BST from a sorted array.
+         */
+        System.out.println("Create a BST from a sorted array.");
+        int a[] = {1,2,3,4,5,6,7,8,9};
+        Node generatedTree = createBSTFromArray(a,0,a.length - 1);
+        System.out.println("Inorder Traversal of the new Tree");
+        inOrderTraversal(generatedTree);
+        System.out.println("\nPreorder Traversal of the new Tree");
+        preOrderTraversal(generatedTree);
+        System.out.println();
+
+    }
+
+    private static likedlist.Node getDLL() {
+        likedlist.Node root = new likedlist.Node(1);
+        root.next = new likedlist.Node(2);
+
+        likedlist.Node secEle = root.next;
+        secEle.head = root;
+        secEle.next = new likedlist.Node(3);
+
+        likedlist.Node thirdEle = secEle.next;
+        thirdEle.head = secEle;
+        thirdEle.next = new likedlist.Node(4);
+
+        likedlist.Node fourthEle = thirdEle.next;
+        fourthEle.head = thirdEle;
+        fourthEle.next = new likedlist.Node(5);
+
+        likedlist.Node fifthEle = fourthEle.next;
+        fifthEle.head = fourthEle;
+        fifthEle.next = new likedlist.Node(6);
+
+        fifthEle.next.head = fifthEle;
+
+        return root;
+    }
+
+    private static Node createBSTFromArray(int a[], int start, int end) {
+        if (start > end) {
+            return null;
+        }
+        int mid = (start + end) / 2;
+        Node root = new Node(a[mid]);
+        root.left = createBSTFromArray(a, start, mid - 1);
+        root.right = createBSTFromArray(a, mid + 1, end);
+        return root;
     }
 
     private static Node getBST() {
@@ -173,32 +221,27 @@ public class BinaryTree {
         return root;
     }
 
-    private static int findDistanceFromRoot(Node<Integer> root,int a) {
-        if(root.data == a) {
+    private static int findDistanceFromRoot(Node<Integer> root, int a) {
+        if (root.data == a) {
             return 0;
-        }
-        else if (root.data > a) {
-            return 1 + findDistanceFromRoot(root.left,a);
-        }
-        else {
-            return 1 + findDistanceFromRoot(root.right,a);
+        } else if (root.data > a) {
+            return 1 + findDistanceFromRoot(root.left, a);
+        } else {
+            return 1 + findDistanceFromRoot(root.right, a);
         }
     }
 
-    private static int findShortestDistanceBetweenNodesBST(Node<Integer> root,int a,int b) {
-        if(root == null) {
+    private static int findShortestDistanceBetweenNodesBST(Node<Integer> root, int a, int b) {
+        if (root == null) {
             return 0;
         }
-        if(root.data > a && root.data > b) {
-            return findShortestDistanceBetweenNodesBST(root.left,a,b);
-        }
-        else if (root.data < a && root.data < b) {
-            return findShortestDistanceBetweenNodesBST(root.right,a,b);
-        }
-        else if ((root.data <= a && root.data >= b) || (root.data >= a && root.data <= b)) {
-            return findDistanceFromRoot(root,a) + findDistanceFromRoot(root,b);
-        }
-        else {
+        if (root.data > a && root.data > b) {
+            return findShortestDistanceBetweenNodesBST(root.left, a, b);
+        } else if (root.data < a && root.data < b) {
+            return findShortestDistanceBetweenNodesBST(root.right, a, b);
+        } else if ((root.data <= a && root.data >= b) || (root.data >= a && root.data <= b)) {
+            return findDistanceFromRoot(root, a) + findDistanceFromRoot(root, b);
+        } else {
             return 0;
         }
     }

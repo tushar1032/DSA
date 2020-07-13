@@ -1,9 +1,9 @@
 package likedlist;
 
 public class Node implements Cloneable {
-    Object value = 0;
-    Node next;
-    Node head;
+    public Object value = 0;
+    public Node next;
+    public Node head;
 
     public void setNext(Node next) {
         this.next = next;
