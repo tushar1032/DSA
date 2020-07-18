@@ -4,6 +4,8 @@ import java.util.*;
 
 public class BinaryTree {
 
+    private static int count = 0;
+
     public static void main(String[] args) {
 
         /**
@@ -163,40 +165,113 @@ public class BinaryTree {
          * Create a BST from a sorted array.
          */
         System.out.println("Create a BST from a sorted array.");
-        int a[] = {1,2,3,4,5,6,7,8,9};
-        Node generatedTree = createBSTFromArray(a,0,a.length - 1);
+        int a[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+        Node generatedTree = createBSTFromArray(a, 0, a.length - 1);
         System.out.println("Inorder Traversal of the new Tree");
         inOrderTraversal(generatedTree);
         System.out.println("\nPreorder Traversal of the new Tree");
         preOrderTraversal(generatedTree);
         System.out.println();
 
+        /**
+         * Find the kth smallest element in a BST.
+         */
+        System.out.println("Find the kth smallest element in a BST.");
+        Node bst = getBST();
+        Node kthSmallestElement = getKthSmallestElement(bst, 4);
+        System.out.println("Inorder Traversal: ");
+        inOrderTraversal(bst);
+        System.out.println();
+        System.out.println("4th Smallest Element is: " + kthSmallestElement.data);
+
+        /**
+         * Another way of Finding the kth element in a bst without a static counter.
+         */
+        System.out.println("Another way of Finding the kth element in a bst without a static counter.");
+        result = getKthSmallestElementWithoutStaticCounter(bst, 4);
+        System.out.println("4th Smallest Element in a BST without static counter: " + result.data);
+
+        /**
+         * Find Floor of a number in a BST.
+         */
+        System.out.println("Find Floor of a number in a BST.");
+        Node floor = findFloor(getBST(), null, 7);
+        System.out.println("Floor of the 7 in the BST is: " + floor.data);
+
+        /**
+         * Find Ceil of a number in a BST.
+         */
+        System.out.println("Find Ceil of a number in a BST.");
+        Node ceil = findCeil(getBST(), null, 5);
+        System.out.println("Ceil of the 5 in the BST is: " + ceil.data);
+
     }
 
-    private static likedlist.Node getDLL() {
-        likedlist.Node root = new likedlist.Node(1);
-        root.next = new likedlist.Node(2);
+    private static Node findFloor(Node root, Node prev, int k) {
+        if (root == null) {
+            return null;
+        }
+        Node left = findFloor(root.left, prev, k);
+        if (left != null) {
+            return left;
+        }
+        if ((Integer) root.data > k) {
+            return prev;
+        } else if ((Integer) root.data == k) {
+            return root;
+        }
+        prev = root;
+        return findFloor(root.right, prev, k);
 
-        likedlist.Node secEle = root.next;
-        secEle.head = root;
-        secEle.next = new likedlist.Node(3);
-
-        likedlist.Node thirdEle = secEle.next;
-        thirdEle.head = secEle;
-        thirdEle.next = new likedlist.Node(4);
-
-        likedlist.Node fourthEle = thirdEle.next;
-        fourthEle.head = thirdEle;
-        fourthEle.next = new likedlist.Node(5);
-
-        likedlist.Node fifthEle = fourthEle.next;
-        fifthEle.head = fourthEle;
-        fifthEle.next = new likedlist.Node(6);
-
-        fifthEle.next.head = fifthEle;
-
-        return root;
     }
+
+    private static Node findCeil(Node root, Node prev, int k) {
+        if (root == null) {
+            return null;
+        }
+        Node right = findCeil(root.right, prev, k);
+        if (right != null) {
+            return right;
+        }
+        if ((Integer) root.data < k) {
+            return prev;
+        } else if ((Integer) root.data == k) {
+            return root;
+        }
+        prev = root;
+        return findCeil(root.left, prev, k);
+    }
+
+    private static List<Node> inOrderAccumulation(Node root, List<Node> nodes) {
+        if (root == null) {
+            return null;
+        }
+        inOrderAccumulation(root.left, nodes);
+        nodes.add(root);
+        inOrderAccumulation(root.right, nodes);
+        return nodes;
+    }
+
+    private static Node getKthSmallestElementWithoutStaticCounter(Node root, int k) {
+        List<Node> nodes = new ArrayList<>();
+        nodes = inOrderAccumulation(root, nodes);
+        return nodes.get(k - 1);
+    }
+
+    private static Node getKthSmallestElement(Node root, int k) {
+        if (root == null) {
+            return null;
+        }
+        Node left = getKthSmallestElement(root.left, k);
+        if (left != null) {
+            return left;
+        }
+        if (++count == k) {
+            return root;
+        }
+        return getKthSmallestElement(root.right, k);
+    }
+
 
     private static Node createBSTFromArray(int a[], int start, int end) {
         if (start > end) {
