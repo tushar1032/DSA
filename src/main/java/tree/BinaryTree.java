@@ -1,10 +1,15 @@
 package tree;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 
 public class BinaryTree {
 
     private static int count = 0;
+
+    private static int sum = 0;
 
     public static void main(String[] args) {
 
@@ -205,6 +210,48 @@ public class BinaryTree {
         Node ceil = findCeil(getBST(), null, 5);
         System.out.println("Ceil of the 5 in the BST is: " + ceil.data);
 
+        /**
+         * Find Sum of all paths from root in a binary tree.
+         */
+        System.out.println("Find Sum of all paths from root in a binary tree.");
+        int total = sumNumbers(getBSTForSum());
+        System.out.println("Sum: " + total);
+    }
+
+    private static Node getBSTForSum() {
+        Node root = new Node(4);
+        root.left = new Node(9);
+        root.right = new Node(0);
+        root.left.left = new Node(5);
+        root.left.right = new Node(1);
+        return root;
+    }
+
+    private static int sumNumbers(Node root) {
+        sumNumberHelper(root, 0, new ArrayList<>());
+        return sum;
+    }
+
+    public static void sumNumberHelper(Node root, int pathLen, List<Integer> arr) {
+        if (root == null) {
+            return;
+        }
+        arr.add(pathLen, (Integer) root.data);
+        pathLen++;
+        if (root.left == null && root.right == null) {
+            int num = 0;
+            int c = pathLen - 1;
+            for (int i = 0; i < pathLen; i++) {
+                int multiplicant = (int) Math.pow(10, c);
+                c--;
+                num = num + arr.get(i) * multiplicant;
+            }
+            System.out.println(num);
+            sum = sum + num;
+        }
+
+        sumNumberHelper(root.left, pathLen, arr);
+        sumNumberHelper(root.right, pathLen, arr);
     }
 
     private static Node findFloor(Node root, Node prev, int k) {
