@@ -216,7 +216,77 @@ public class BinaryTree {
         System.out.println("Find Sum of all paths from root in a binary tree.");
         int total = sumNumbers(getBSTForSum());
         System.out.println("Sum: " + total);
+
+        /**
+         * Find Min Depth of a tree.
+         */
+        System.out.println("Find Min Depth of a tree.");
+        int minDepth = minDepth(getBST(), 0);
+        System.out.println(minDepth);
+
+        /**
+         * Flatten a tree.
+         */
+        System.out.println("Flatten a tree.");
+        Node flatRoot = flatten(getTree());
+        inOrderTraversal(flatRoot);
     }
+
+    private static Node getTree() {
+        Node root = new Node(1);
+        root.left = new Node(2);
+        root.right = new Node(5);
+        Node lRoot = root.left;
+        lRoot.left = new Node(3);
+        lRoot.right = new Node(4);
+        Node rRoot = root.right;
+        rRoot.right = new Node(6);
+        return root;
+    }
+
+    private static Node t;
+    private static Node temp;
+    public static Node flatten(Node root) {
+        return helper(root);
+    }
+
+    public static Node helper(Node root) {
+        if(root == null) {
+            return null;
+        }
+
+        if(root.left == null && root.right == null) {
+            return root;
+        }
+
+        Node left = helper(root.left);
+        Node right = helper(root.right);
+
+        if(left != null) {
+            left.right = root.right;
+            root.right = root.left;
+            root.left = null;
+
+        }
+
+        return right != null ? right : left;
+    }
+
+    private static int minLength = Integer.MAX_VALUE;
+
+    private static int minDepth(Node root, int pathLen) {
+        if (root == null) {
+            return 0;
+        }
+        pathLen++;
+        if (root.left == null && root.right == null) {
+            minLength = Math.min(pathLen, minLength);
+        }
+        minDepth(root.left, pathLen);
+        minDepth(root.right, pathLen);
+        return minLength;
+    }
+
 
     private static Node getBSTForSum() {
         Node root = new Node(4);
@@ -246,7 +316,6 @@ public class BinaryTree {
                 c--;
                 num = num + arr.get(i) * multiplicant;
             }
-            System.out.println(num);
             sum = sum + num;
         }
 
